@@ -1,0 +1,43 @@
+{
+  "name": "library-design",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint -c .oxlintrc.json --tsconfig tsconfig.json src/",
+    "linter": "npm run lint",
+    "fmt": "oxfmt src/",
+    "format": "npm run fmt",
+    "validate": "npm run fmt && npm run typecheck && npm run lint && npm run test",
+    "remove-template-examples": "node scripts/remove-template-examples.mjs"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^3.1.1",
+    "@xstate/react": "^5.0.2",
+    "pixi.js": "^8.8.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "xstate": "^5.19.2"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "jsdom": "^26.0.0",
+    "oxfmt": "^0.45.0",
+    "oxlint": "^1.60.0",
+    "oxlint-tsgolint": "^0.21.1",
+    "typescript": "^5.8.3",
+    "vite": "^6.4.2",
+    "vitest": "^3.1.2"
+  }
+}

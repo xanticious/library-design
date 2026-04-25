@@ -1,0 +1,47 @@
+/* Font examples */
+.wrapper {
+  margin-bottom: 2rem;
+}
+
+.wrapper h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #c8c8e0;
+}
+
+.wrapper p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.fontLibreBaskerville {
+  font-family: "Libre Baskerville", serif;
+}
+
+.fontLora {
+  font-family: "Lora", serif;
+}
+
+.fontInter {
+  font-family: "Inter", sans-serif;
+}
+
+.fontRoboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.fontOpenSans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.fontLato {
+  font-family: "Lato", sans-serif;
+}
+
+.fontJetbrainsMono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.fontFiraCode {
+  font-family: "Fira Code", monospace;
+}
