@@ -7,6 +7,10 @@ import {
   WebGLRenderer,
 } from "three";
 import type { AppState } from "../machines/appMachine";
+import { createExterior } from "../three/exterior";
+import { createGrounds } from "../three/grounds";
+import { createInterior } from "../three/interior";
+import { createSceneLighting } from "../three/sceneLighting";
 import styles from "./ThreeCanvas.module.css";
 
 type Props = {
@@ -33,6 +37,17 @@ export function ThreeCanvas({ mode }: Props) {
 
     const scene = new Scene();
     sceneRef.current = scene;
+
+    // ── Phase 2: Building shell geometry ──────────────────────────────────
+    scene.add(createExterior());
+    scene.add(createGrounds());
+    scene.add(createInterior());
+
+    // ── Phase 2: Lighting ─────────────────────────────────────────────────
+    const { sun, sky, windowLights } = createSceneLighting();
+    scene.add(sun);
+    scene.add(sky);
+    for (const light of windowLights) scene.add(light);
 
     const camera = new PerspectiveCamera(
       75,
