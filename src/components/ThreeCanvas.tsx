@@ -10,6 +10,7 @@ import {
 import { FpsController } from "../three/fpsController";
 import type { AppState } from "../machines/appMachine";
 import { createCirculationDesk } from "../three/circulationDesk";
+import { createChildrensArea } from "../three/childrensArea";
 import { createComputerArea } from "../three/computerArea";
 import { createCommunityRoom } from "../three/communityRoom";
 import { createExterior } from "../three/exterior";
@@ -60,6 +61,7 @@ export function ThreeCanvas({ mode }: Props) {
 
     // ── Phase 3: Interior zones ───────────────────────────────────────────
     scene.add(createCirculationDesk());
+    scene.add(createChildrensArea());
     scene.add(createComputerArea());
     scene.add(createCommunityRoom());
     scene.add(createStudyRooms());
