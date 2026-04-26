@@ -1,65 +1,33 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
-import FontExamples from "./components/FontExamples";
-import PixiExample from "./components/PixiExample";
-import Counter from "./components/Counter";
+import { useActor } from "@xstate/react";
+import { ThreeCanvas } from "./components/ThreeCanvas";
+import { LandingOverlay } from "./components/LandingOverlay";
+import { appMachine, type AppState } from "./machines/appMachine";
 import styles from "./App.module.css";
 
-const STACK = [
-  "TypeScript",
-  "React 19",
-  "Vite",
-  "Vitest",
-  "XState v5",
-  "PixiJS v8",
-  "CSS Modules",
-  "OxLint",
-  "Oxfmt",
-  "FontAwesome",
-  "Google Fonts",
-];
-
-const FEATURES = [
-  "State machine (XState)",
-  "WebGL rendering (PixiJS)",
-  "Google Fonts pre-loaded",
-  "FontAwesome icons",
-  "Type-safe with TypeScript",
-  "GitHub Pages ready",
-];
-
 export default function App() {
+  const [state, send] = useActor(appMachine);
+
   return (
-    <main className={styles.app}>
-      <h1>
-        <FontAwesomeIcon icon={faRocket} className={styles.headerIcon} />
-        SPA (Single Page Application) Template
-      </h1>
+    <div className={styles.root}>
+      <ThreeCanvas mode={state.value as AppState} />
 
-      <section>
-        <h2>Stack</h2>
-        <ul>
-          {STACK.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
+      {(state.matches("landing") || state.matches("transitioning")) && (
+        <LandingOverlay onExplore={() => send({ type: "EXPLORE_CLICKED" })} />
+      )}
 
-      <section>
-        <h2>Features</h2>
-        <ul>
-          {FEATURES.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
+      {state.matches("exploring") && (
+        <div className={styles.hud}>
+          <span className={styles.crosshair}>+</span>
+          <span className={styles.escHint}>Press ESC to pause</span>
+        </div>
+      )}
 
-      <section>
-        <h2>Examples</h2>
-        <FontExamples />
-        <PixiExample />
-        <Counter />
-      </section>
-    </main>
+      {state.matches("paused") && (
+        <div className={styles.pauseOverlay}>
+          <p>Paused</p>
+          <button onClick={() => send({ type: "RESUME" })}>Resume</button>
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,47 +1,65 @@
-/* App layout */
-.app {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+.root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #1a1a1a;
 }
 
-.app > h1 {
-  font-size: 2rem;
-  border-bottom: 1px solid #2a2a3a;
-  padding-bottom: 0.5rem;
-  margin-bottom: 2rem;
+/* ── FPS HUD ────────────────────────────────────────── */
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.app section {
-  margin-bottom: 3rem;
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  line-height: 1;
+  user-select: none;
 }
 
-.app section > h2 {
-  color: #a0a0c0;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
+.escHint {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  user-select: none;
 }
 
-.app section > ul {
-  list-style: none;
-  padding: 0;
+/* ── Pause overlay ──────────────────────────────────── */
+.pauseOverlay {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
-.app section > ul > li {
-  background: #1e1e2e;
-  border: 1px solid #2a2a3a;
-  border-radius: 6px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.9rem;
+.pauseOverlay p {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-/* Header icon */
-.headerIcon {
-  margin-right: 0.5rem;
-  color: #7c7cdc;
+.pauseOverlay button {
+  padding: 0.6rem 2rem;
+  font-size: 1rem;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
