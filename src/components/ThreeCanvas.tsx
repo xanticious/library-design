@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import {
   ACESFilmicToneMapping,
+  Clock,
   PCFSoftShadowMap,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
 } from "three";
+import { FpsController } from "../three/fpsController";
 import type { AppState } from "../machines/appMachine";
 import { createCirculationDesk } from "../three/circulationDesk";
 import { createComputerArea } from "../three/computerArea";
@@ -35,6 +37,7 @@ export function ThreeCanvas({ mode }: Props) {
   const cameraRef = useRef<PerspectiveCamera | null>(null);
   const sceneRef = useRef<Scene | null>(null);
   const rafRef = useRef<number>(0);
+  const fpsControllerRef = useRef<FpsController | null>(null);
 
   // Bootstrap Three.js once on mount
   useEffect(() => {
@@ -108,6 +111,11 @@ export function ThreeCanvas({ mode }: Props) {
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
+    const fpsController = new FpsController(camera, renderer.domElement);
+    fpsControllerRef.current = fpsController;
+
+    const clock = new Clock();
+
     const onResize = () => {
       const w = container.clientWidth;
       const h = container.clientHeight;
@@ -120,6 +128,8 @@ export function ThreeCanvas({ mode }: Props) {
     // Render loop
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick);
+      const dt = clock.getDelta();
+      fpsController.update(dt);
       renderer.render(scene, camera);
     };
     tick();
@@ -127,6 +137,7 @@ export function ThreeCanvas({ mode }: Props) {
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", onResize);
+      fpsController.disable();
       renderer.dispose();
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
@@ -134,9 +145,15 @@ export function ThreeCanvas({ mode }: Props) {
     };
   }, []);
 
-  // Respond to mode changes (cinematic ↔ FPS signals handled here in later phases)
+  // Enable FPS controller when exploring, disable otherwise
   useEffect(() => {
-    // Phase 1: no-op — scene is empty; mode switching implemented in Phase 6
+    const ctrl = fpsControllerRef.current;
+    if (!ctrl) return;
+    if (mode === "exploring") {
+      ctrl.enable();
+    } else {
+      ctrl.disable();
+    }
   }, [mode]);
 
   return <div ref={containerRef} className={styles.container} />;

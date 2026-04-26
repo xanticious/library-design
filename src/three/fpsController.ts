@@ -59,12 +59,14 @@ export function computeMovement(
   }
 
   // Rotate by yaw: forward is -Z when yaw=0
+  // Camera world-forward = (-sin(yaw), 0, -cos(yaw))
+  // Camera world-right   = ( cos(yaw), 0, -sin(yaw))
   const sin = Math.sin(yaw);
   const cos = Math.cos(yaw);
 
   return {
-    dx: (strafe * cos - forward * sin) * speed * dt,
-    dz: (strafe * sin + forward * cos) * speed * dt,
+    dx: (strafe * cos + forward * sin) * speed * dt,
+    dz: (-strafe * sin + forward * cos) * speed * dt,
   };
 }
 

@@ -49,10 +49,10 @@ describe("computeMovement", () => {
     expect(dz).toBeCloseTo(-2, 5);
   });
 
-  it("rotates forward direction with yaw (90° east = +X forward)", () => {
-    // yaw = π/2: camera looks toward +X, so W should give +dx
+  it("rotates forward direction with yaw (90° left = -X forward)", () => {
+    // yaw = π/2: camera looks toward -X (west), so W should give dx = -4
     const { dx, dz } = computeMovement({ ...noKeys, w: true }, Math.PI / 2, 4, 1);
-    expect(dx).toBeCloseTo(4, 4);
+    expect(dx).toBeCloseTo(-4, 4);
     expect(dz).toBeCloseTo(0, 4);
   });
 });
