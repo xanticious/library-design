@@ -7,10 +7,16 @@ import {
   WebGLRenderer,
 } from "three";
 import type { AppState } from "../machines/appMachine";
+import { createCirculationDesk } from "../three/circulationDesk";
+import { createComputerArea } from "../three/computerArea";
+import { createCommunityRoom } from "../three/communityRoom";
 import { createExterior } from "../three/exterior";
 import { createGrounds } from "../three/grounds";
 import { createInterior } from "../three/interior";
 import { createSceneLighting } from "../three/sceneLighting";
+import { createShelfUnit, createBookRow } from "../three/shelving";
+import { createStaffArea } from "../three/staffArea";
+import { createStudyRooms } from "../three/studyRooms";
 import styles from "./ThreeCanvas.module.css";
 
 type Props = {
@@ -48,6 +54,40 @@ export function ThreeCanvas({ mode }: Props) {
     scene.add(sun);
     scene.add(sky);
     for (const light of windowLights) scene.add(light);
+
+    // ── Phase 3: Interior zones ───────────────────────────────────────────
+    scene.add(createCirculationDesk());
+    scene.add(createComputerArea());
+    scene.add(createCommunityRoom());
+    scene.add(createStudyRooms());
+    scene.add(createStaffArea());
+
+    // Shelving rows — Adult Fiction (4 double-sided units along the central stacks)
+    for (let i = 0; i < 4; i++) {
+      const unit = createShelfUnit({ width: 1.2, height: 2.1, depth: 0.4, shelves: 5 });
+      unit.position.set(-3 + i * 2, 0, 2 - i * 1.5);
+      scene.add(unit);
+      // Books on each shelf level
+      for (let s = 0; s < 5; s++) {
+        const books = createBookRow(20, i * 5 + s);
+        books.position.set(-3 + i * 2 - 0.55, s * (2.1 / 4) + 0.1, 2 - i * 1.5);
+        scene.add(books);
+      }
+    }
+
+    // Non-Fiction stacks (taller, 2.1 m, 5 shelves)
+    for (let i = 0; i < 3; i++) {
+      const unit = createShelfUnit({ width: 1.2, height: 2.1, depth: 0.4, shelves: 5 });
+      unit.position.set(1 + i * 2, 0, -3 - i * 1.5);
+      scene.add(unit);
+    }
+
+    // YA Fiction (shorter shelving — 1.5 m, 4 shelves)
+    for (let i = 0; i < 2; i++) {
+      const unit = createShelfUnit({ width: 1.2, height: 1.5, depth: 0.35, shelves: 4 });
+      unit.position.set(-2 + i * 2, 0, -5);
+      scene.add(unit);
+    }
 
     const camera = new PerspectiveCamera(
       75,
